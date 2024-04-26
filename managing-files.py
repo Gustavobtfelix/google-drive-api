@@ -72,7 +72,7 @@ def list_files_and_folders():
     if not items:
         print('No files or folders found.')
     else:
-        return items
+        # return items
         print('Files and folders:')
         for item in items:
             print(u'{0} ({1})'.format(item['name'], item['id']))
@@ -88,9 +88,9 @@ def share_access(file_id, email, role='reader'):
     # Build the Google Drive API service
     service = build('drive', 'v3', credentials=credentials)
 
-    if '@baidu' not in email:
-        print("Não é possível compartilhar\nEste endereço de e-mail está vinculado a uma Conta do Google pessoal. O domínio Your Domain não permite o compartilhamento com contas pessoais.")
-        return
+    # if '@baidu' not in email:
+    #     print("Não é possível compartilhar\nEste endereço de e-mail está vinculado a uma Conta do Google pessoal. O domínio Your Domain não permite o compartilhamento com contas pessoais.")
+    #     return
     
     permissions = {
         'type': 'user',
@@ -120,12 +120,12 @@ def delete_drive_file(file_id):
 
 
 if __name__ == '__main__':
-    # file_id = create_drive_file()
-    # delete_drive_file('1aqs8oQYymn__dsCPQGO9j5ppGQHTW2vs')
+    # folder_id = create_folder('MyFolder')
+    # file_id = create_drive_file(folder_id)
     files = list_files_and_folders()
-    print('Files and folders:')
-    for item in files:
-        delete_drive_file(item['id'])
+    # print('Files and folders:')
+    # for item in files:
+    #     delete_drive_file(item['id'])
 
-    folder_id = create_folder('MyFolder')
     share_access(folder_id, REGULAR_ACCOUNT_EMAIL, 'writer')
+    # delete_drive_file(id)
