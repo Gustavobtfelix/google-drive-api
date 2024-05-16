@@ -127,5 +127,5 @@ if __name__ == '__main__':
     # for item in files:
     #     delete_drive_file(item['id'])
 
-    share_access(folder_id, REGULAR_ACCOUNT_EMAIL, 'writer')
+    # share_access(folder_id, REGULAR_ACCOUNT_EMAIL, 'writer')
     # delete_drive_file(id)
