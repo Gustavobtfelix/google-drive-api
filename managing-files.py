@@ -4,20 +4,19 @@ from googleapiclient.http import MediaIoBaseUpload
 from io import BytesIO
 
 # Replace 'path/to/your/service-account-key.json' with the path to your service account key JSON file
-SERVICE_ACCOUNT_FILE = 'token.json'
+SERVICE_ACCOUNT_FILE = 'tokenSA.json'
 SCOPES = ['https://www.googleapis.com/auth/drive']
 
 # The email address of your regular Google account
 REGULAR_ACCOUNT_EMAIL = 'yourmail@gmail.com.br'
 
+credentials = service_account.Credentials.from_service_account_file(
+    SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+
+# Build the Google Drive API service
+service = build('drive', 'v3', credentials=credentials)
+
 def create_folder(folder_name):
-    # Authenticate using the service account credentials
-    credentials = service_account.Credentials.from_service_account_file(
-        SERVICE_ACCOUNT_FILE, scopes=SCOPES)
-    
-    # Build the Google Drive API service
-    service = build('drive', 'v3', credentials=credentials)
-    
     # Define folder metadata
     folder_metadata = {
         'name': folder_name,
@@ -32,13 +31,6 @@ def create_folder(folder_name):
     return folder.get('id')
 
 def create_drive_file(folder_id):
-    # Authenticate using the service account credentials
-    credentials = service_account.Credentials.from_service_account_file(
-        SERVICE_ACCOUNT_FILE, scopes=SCOPES)
-    
-    # Build the Google Drive API service
-    service = build('drive', 'v3', credentials=credentials)
-    
     # Define file metadata
     file_metadata = {
         'name': 'MyFile.txt',  # Name of the file you want to create
@@ -58,13 +50,6 @@ def create_drive_file(folder_id):
     return file.get('id')
 
 def list_files_and_folders():
-    # Authenticate using the service account credentials
-    credentials = service_account.Credentials.from_service_account_file(
-        SERVICE_ACCOUNT_FILE, scopes=SCOPES)
-    
-    # Build the Google Drive API service
-    service = build('drive', 'v3', credentials=credentials)
-
     # List all files and folders
     results = service.files().list(fields="nextPageToken, files(id, name, mimeType)").execute()
     items = results.get('files', [])
@@ -80,14 +65,7 @@ def list_files_and_folders():
 def share_access(file_id, email, role='reader'):
     if(role != 'reader' and role != 'writer' and role != 'owner'):
         raise ValueError('Invalid role. The role must be "reader" or "writer".')
-
-    # Authenticate using the service account credentials
-    credentials = service_account.Credentials.from_service_account_file(
-        SERVICE_ACCOUNT_FILE, scopes=SCOPES)
     
-    # Build the Google Drive API service
-    service = build('drive', 'v3', credentials=credentials)
-
     # if '@baidu' not in email:
     #     print("Não é possível compartilhar\nEste endereço de e-mail está vinculado a uma Conta do Google pessoal. O domínio Your Domain não permite o compartilhamento com contas pessoais.")
     #     return
@@ -107,13 +85,6 @@ def share_access(file_id, email, role='reader'):
     print('Access shared with', email)
 
 def delete_drive_file(file_id):
-    # Authenticate using the service account credentials
-    credentials = service_account.Credentials.from_service_account_file(
-        SERVICE_ACCOUNT_FILE, scopes=SCOPES)
-    
-    # Build the Google Drive API service
-    service = build('drive', 'v3', credentials=credentials)
-
     # Delete the file
     service.files().delete(fileId=file_id).execute()
     print('File deleted successfully.')
